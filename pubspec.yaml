@@ -1,4 +1,4 @@
-name: flutter_application_1
+name: reverse_engineering_bca
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -61,7 +61,10 @@ flutter:
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
-
+  fonts:
+    - family: UntitledFont
+      fonts:
+        - asset: assets/fonts/UntitleddTTF.ttf
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 
