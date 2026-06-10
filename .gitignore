@@ -46,3 +46,7 @@ app.*.map.json
 
 #environent files
 .env
+
+.vscode/
+# Added by code-review-graph
+.code-review-graph/
