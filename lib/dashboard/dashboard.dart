@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:reverse_engineering_bca/account/accountinformation.dart';
 
 class MyBcaHomeScreen extends StatelessWidget {
   const MyBcaHomeScreen({Key? key}) : super(key: key);
@@ -25,7 +26,7 @@ class MyBcaHomeScreen extends StatelessWidget {
                 children: [
                   _buildAppBar(),
                   _buildGreeting(),
-                  _buildAccountCard(),
+                  _buildAccountCard(context),
                   _buildPromoBanner(),
                   _buildMainMenu(),
                   const SizedBox(height: 16),
@@ -94,7 +95,7 @@ class MyBcaHomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildAccountCard() {
+  Widget _buildAccountCard(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Container(
@@ -207,12 +208,18 @@ class MyBcaHomeScreen extends StatelessWidget {
               ),
             ),
             const Divider(height: 1, color: Color(0xFFEEEEEE)),
-            // Tombol Account Transactions
+            // Tombol Account Transactions (DI SINI PENAMBAHAN ROUTINGNYA)
             Material(
               color: Colors.transparent,
               child: InkWell(
                 onTap: () {
-                  debugPrint("Account Transactions Tapped!");
+                  // Memicu perpindahan halaman ke AccountInformationPage
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AccountInformationPage(),
+                    ),
+                  );
                 },
                 borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(16),
@@ -327,8 +334,8 @@ class MyBcaHomeScreen extends StatelessWidget {
 
   Widget _buildMenuGrid() {
     final List<Map<String, dynamic>> menuItems = [
-      {'icon': Icons.send, 'label': 'Transfer', 'isNew': false},
-      {'icon': Icons.receipt, 'label': 'Payment & Top\nUp', 'isNew': true},
+      {'icon': Icons.send, 'label': 'TransFer', 'isNew': false},
+      {'icon': Icons.receipt, 'label': 'Payment&TopUp', 'isNew': true},
       {'icon': Icons.show_chart, 'label': 'Investment', 'isNew': false},
       {'icon': Icons.shopping_bag, 'label': 'Lifestyle', 'isNew': true},
       {'icon': Icons.credit_card, 'label': 'Flazz', 'isNew': false},
