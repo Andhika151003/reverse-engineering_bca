@@ -14,8 +14,7 @@ class MyBcaCloneApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'myBCA Clone',
       theme: ThemeData(
-        // MENGGUNAKAN FONT CUSTOM ANDA DI SINI
-        fontFamily: 'UntitledFont',
+        fontFamily: 'Roboto',
         primaryColor: const Color(0xFF005BAC),
       ),
       home: const MyBcaHomeScreen(),
