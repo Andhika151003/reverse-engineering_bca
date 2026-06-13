@@ -15,9 +15,9 @@ class _MyBcaHomeScreenState extends State<MyBcaHomeScreen> {
   final Color bcaBlue = const Color(0xFF005BAC);
   final Color bcaLightBlue = const Color(0xFF1CB5E0);
 
-  String userName = 'KRESNA MUHARRAM';
+  String userName = 'Default';
   String accountNumber = '0240219280';
-  String balance = '10000000';
+  String balance = '154830048';
   bool isBalanceVisible = false;
 
   double scale = 1.0;
@@ -167,7 +167,7 @@ class _MyBcaHomeScreenState extends State<MyBcaHomeScreen> {
           text: 'HELLO, ',
           style: GoogleFonts.openSans(
             color: Colors.white,
-            fontSize: 16 * scale,
+            fontSize: 14.5 * scale,
             fontWeight: FontWeight.normal,
             letterSpacing: 0.5,
           ),
@@ -175,7 +175,7 @@ class _MyBcaHomeScreenState extends State<MyBcaHomeScreen> {
             TextSpan(
               text: userName.toUpperCase(),
               style: GoogleFonts.openSans(
-                fontWeight: FontWeight.w800,
+                fontWeight: FontWeight.w700,
               ), // Sedikit dipertebal
             ),
           ],
@@ -390,10 +390,15 @@ class _MyBcaHomeScreenState extends State<MyBcaHomeScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Image.asset(
-            'assets/images/TheNewGebyar.png',
-            height: 42 * scale,
-            width: 120 * scale,
+          Padding(
+            padding: EdgeInsets.only(right: 40.0 * scale),
+            child: Image.asset(
+              'assets/images/TheNewGebyar.png',
+              height: 48 * scale,
+              width: 140 * scale,
+              // fit: BoxFit.contain,
+              // alignment: Alignment.centerLeft,
+            ),
           ),
           Row(
             children: [
@@ -458,7 +463,7 @@ class _MyBcaHomeScreenState extends State<MyBcaHomeScreen> {
                       'Atur',
                       style: GoogleFonts.openSans(
                         color: bcaLightBlue,
-                        fontWeight: FontWeight.w800, // Ikut dipertebal sedikit
+                        fontWeight: FontWeight.w700, // Ikut dipertebal sedikit
                         fontSize: 14 * scale,
                       ),
                     ),
