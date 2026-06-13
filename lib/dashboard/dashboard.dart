@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:google_fonts/google_fonts.dart'; // Import Google Fonts
 import 'package:reverse_engineering_bca/account/accountinformation.dart';
 import 'package:reverse_engineering_bca/settings/settings_page.dart';
 
@@ -18,6 +19,8 @@ class _MyBcaHomeScreenState extends State<MyBcaHomeScreen> {
   String accountNumber = '0240219280';
   String balance = '10000000';
   bool isBalanceVisible = false;
+
+  double scale = 1.0;
 
   String _formatBalance(String value) {
     final digits = value.replaceAll(RegExp(r'\D'), '');
@@ -41,7 +44,6 @@ class _MyBcaHomeScreenState extends State<MyBcaHomeScreen> {
     for (int i = 0; i < digits.length; i++) {
       if (i > 0 && i % 3 == 0) {
         if (digits.length - i == 1) {
-          // don't add dash if only 1 digit is left
         } else {
           result += '-';
         }
@@ -53,18 +55,17 @@ class _MyBcaHomeScreenState extends State<MyBcaHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    scale = (MediaQuery.of(context).size.width / 430.0).clamp(0.7, 1.0);
+
     return Scaffold(
       backgroundColor: const Color(0xFFF4F6F8),
       body: Stack(
         children: [
-          // Background Gambar Atas
           Container(
             height: MediaQuery.of(context).size.height * 0.55,
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage(
-                  'assets/images/background.png',
-                ), // Gambar latar belakang baru
+                image: AssetImage('assets/images/background.png'),
                 fit: BoxFit.cover,
               ),
             ),
@@ -81,13 +82,13 @@ class _MyBcaHomeScreenState extends State<MyBcaHomeScreen> {
                     children: [
                       _buildPromoBanner(),
                       Padding(
-                        padding: const EdgeInsets.only(top: 70),
+                        padding: EdgeInsets.only(top: 70 * scale),
                         child: _buildMainMenu(),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
-                  const BcaPromoCarousel(), // Carousel ditambahkan di sini
+                  SizedBox(height: 16 * scale),
+                  const BcaPromoCarousel(),
                 ],
               ),
             ),
@@ -100,22 +101,30 @@ class _MyBcaHomeScreenState extends State<MyBcaHomeScreen> {
 
   Widget _buildAppBar() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
+      padding: EdgeInsets.symmetric(
+        horizontal: 20.0 * scale,
+        vertical: 12.0 * scale,
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Image.asset('assets/images/header_myBCA.png', height: 30),
+          Image.asset('assets/images/header_myBCA.png', height: 30 * scale),
           Row(
             children: [
               IconButton(
-                icon: const Icon(
+                icon: Icon(
                   Icons.headset_mic_outlined,
                   color: Colors.white,
+                  size: 24 * scale,
                 ),
                 onPressed: () {},
               ),
               IconButton(
-                icon: const Icon(Icons.settings_outlined, color: Colors.white),
+                icon: Icon(
+                  Icons.settings_outlined,
+                  color: Colors.white,
+                  size: 24 * scale,
+                ),
                 onPressed: () async {
                   final result = await Navigator.push(
                     context,
@@ -137,7 +146,7 @@ class _MyBcaHomeScreenState extends State<MyBcaHomeScreen> {
                 },
               ),
               IconButton(
-                icon: const Icon(Icons.logout, color: Colors.white),
+                icon: Icon(Icons.logout, color: Colors.white, size: 24 * scale),
                 onPressed: () {},
               ),
             ],
@@ -149,21 +158,25 @@ class _MyBcaHomeScreenState extends State<MyBcaHomeScreen> {
 
   Widget _buildGreeting() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 4.0),
+      padding: EdgeInsets.symmetric(
+        horizontal: 20.0 * scale,
+        vertical: 4.0 * scale,
+      ),
       child: RichText(
         text: TextSpan(
           text: 'HELLO, ',
-          style: const TextStyle(
-            fontFamily: 'Roboto',
+          style: GoogleFonts.openSans(
             color: Colors.white,
-            fontSize: 16,
+            fontSize: 16 * scale,
             fontWeight: FontWeight.normal,
             letterSpacing: 0.5,
           ),
           children: [
             TextSpan(
               text: userName.toUpperCase(),
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: GoogleFonts.openSans(
+                fontWeight: FontWeight.w800,
+              ), // Sedikit dipertebal
             ),
           ],
         ),
@@ -173,108 +186,116 @@ class _MyBcaHomeScreenState extends State<MyBcaHomeScreen> {
 
   Widget _buildAccountCard(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: EdgeInsets.all(20.0 * scale),
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(16 * scale),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.1),
-              blurRadius: 10,
-              offset: const Offset(0, 5),
+              blurRadius: 10 * scale,
+              offset: Offset(0, 5 * scale),
             ),
           ],
         ),
         child: Column(
           children: [
-            // Bagian BCA ID
             Container(
-              padding: const EdgeInsets.all(16.0),
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
+              padding: EdgeInsets.all(16.0 * scale),
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
                   colors: [Color(0xFF17C3CE), Color(0xFF0C97B2)],
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
                 ),
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(16),
-                  topRight: Radius.circular(16),
+                  topLeft: Radius.circular(16 * scale),
+                  topRight: Radius.circular(16 * scale),
                 ),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 4,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 8 * scale,
+                      vertical: 4 * scale,
                     ),
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.white70),
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(12 * scale),
                     ),
-                    child: const Row(
+                    child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(Icons.qr_code, color: Colors.white, size: 14),
-                        SizedBox(width: 4),
+                        Icon(
+                          Icons.qr_code,
+                          color: Colors.white,
+                          size: 14 * scale,
+                        ),
+                        SizedBox(width: 4 * scale),
                         Text(
                           'BCA ID >',
-                          style: TextStyle(color: Colors.white, fontSize: 10),
+                          style: GoogleFonts.openSans(
+                            color: Colors.white,
+                            fontSize: 10 * scale,
+                          ),
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12 * scale),
                   Row(
                     children: [
                       Text(
                         'Account: ${_formatAccountNumber(accountNumber)}',
-                        style: const TextStyle(
+                        style: GoogleFonts.openSans(
                           color: Colors.white,
-                          fontSize: 13,
-                          fontWeight: FontWeight.w500,
+                          fontSize: 13 * scale,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
-                      const SizedBox(width: 8),
-                      const Icon(Icons.copy, color: Colors.white70, size: 14),
+                      SizedBox(width: 8 * scale),
+                      Icon(Icons.copy, color: Colors.white70, size: 14 * scale),
                     ],
                   ),
                 ],
               ),
             ),
-            // Bagian Active Balance
             Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: EdgeInsets.all(16.0 * scale),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
+                      Text(
                         'Active Balance',
-                        style: TextStyle(color: Colors.grey, fontSize: 12),
+                        style: GoogleFonts.openSans(
+                          color: Colors.grey,
+                          fontSize: 12 * scale,
+                        ),
                       ),
-                      const SizedBox(height: 4),
+                      SizedBox(height: 4 * scale),
                       Row(
                         children: [
-                          const Text(
+                          Text(
                             'IDR ',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
+                            style: GoogleFonts.openSans(
+                              fontSize: 18 * scale,
+                              fontWeight: FontWeight.w800, // Dipertebal
                             ),
                           ),
                           Text(
                             isBalanceVisible
                                 ? _formatBalance(balance)
                                 : '••••••••',
-                            style: TextStyle(
-                              fontSize: 18,
-                              letterSpacing: isBalanceVisible ? 0 : 2,
-                              fontWeight: FontWeight.bold,
+                            style: GoogleFonts.openSans(
+                              fontSize: 18 * scale,
+                              letterSpacing: isBalanceVisible ? 0 : 2 * scale,
+                              fontWeight: FontWeight.w800, // Dipertebal
                             ),
                           ),
                         ],
@@ -287,6 +308,7 @@ class _MyBcaHomeScreenState extends State<MyBcaHomeScreen> {
                           ? Icons.visibility_outlined
                           : Icons.visibility_off_outlined,
                       color: bcaBlue,
+                      size: 24 * scale,
                     ),
                     onPressed: () {
                       setState(() {
@@ -298,12 +320,10 @@ class _MyBcaHomeScreenState extends State<MyBcaHomeScreen> {
               ),
             ),
             const Divider(height: 1, color: Color(0xFFEEEEEE)),
-            // Tombol Account Transactions (DI SINI PENAMBAHAN ROUTINGNYA)
             Material(
               color: Colors.transparent,
               child: InkWell(
                 onTap: () {
-                  // Memicu perpindahan halaman ke AccountInformationPage
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -311,26 +331,26 @@ class _MyBcaHomeScreenState extends State<MyBcaHomeScreen> {
                     ),
                   );
                 },
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(16),
-                  bottomRight: Radius.circular(16),
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(16 * scale),
+                  bottomRight: Radius.circular(16 * scale),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: EdgeInsets.all(16.0 * scale),
                   child: Row(
                     children: [
                       Icon(
                         Icons.receipt_long_outlined,
                         color: bcaBlue,
-                        size: 20,
+                        size: 20 * scale,
                       ),
-                      const SizedBox(width: 8),
+                      SizedBox(width: 8 * scale),
                       Text(
                         'Account Transactions',
-                        style: TextStyle(
+                        style: GoogleFonts.openSans(
                           color: bcaBlue,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 13,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 13 * scale,
                         ),
                       ),
                     ],
@@ -346,14 +366,14 @@ class _MyBcaHomeScreenState extends State<MyBcaHomeScreen> {
 
   Widget _buildPromoBanner() {
     return Container(
-      padding: const EdgeInsets.only(
-        left: 20.0,
-        right: 20.0,
-        top: 16.0,
-        bottom: 50.0,
+      padding: EdgeInsets.only(
+        left: 20.0 * scale,
+        right: 20.0 * scale,
+        top: 16.0 * scale,
+        bottom: 50.0 * scale,
       ),
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
           colors: [
             Color.fromARGB(255, 1, 91, 180),
             Color.fromARGB(255, 79, 214, 255),
@@ -362,33 +382,37 @@ class _MyBcaHomeScreenState extends State<MyBcaHomeScreen> {
           end: Alignment.centerRight,
         ),
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(24),
-          topRight: Radius.circular(24),
+          topLeft: Radius.circular(24 * scale),
+          topRight: Radius.circular(24 * scale),
         ),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Image.asset('assets/images/TheNewGebyar.png', height: 45),
-          const Row(
+          Image.asset(
+            'assets/images/TheNewGebyar.png',
+            height: 42 * scale,
+            width: 120 * scale,
+          ),
+          Row(
             children: [
               Text(
                 'Menangkan di Sini',
-                style: TextStyle(
+                style: GoogleFonts.openSans(
                   color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
+                  fontSize: 14 * scale,
+                  fontWeight: FontWeight.w600,
                   shadows: [
                     Shadow(
-                      offset: Offset(0, 1),
-                      blurRadius: 2.0,
+                      offset: Offset(0, 1 * scale),
+                      blurRadius: 2.0 * scale,
                       color: Colors.black26,
                     ),
                   ],
                 ),
               ),
-              Icon(Icons.chevron_right, color: Colors.white, size: 16),
+              Icon(Icons.chevron_right, color: Colors.white, size: 16 * scale),
             ],
           ),
         ],
@@ -398,37 +422,44 @@ class _MyBcaHomeScreenState extends State<MyBcaHomeScreen> {
 
   Widget _buildMainMenu() {
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(24),
-          topRight: Radius.circular(24),
+          topLeft: Radius.circular(24 * scale),
+          topRight: Radius.circular(24 * scale),
         ),
       ),
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
+            padding: EdgeInsets.fromLTRB(
+              20 * scale,
+              20 * scale,
+              20 * scale,
+              10 * scale,
+            ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  'Menu Utama',
-                  style: TextStyle(
-                    color: Color(0xFF003D79),
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                Text(
+                  'Main Menu',
+                  style: GoogleFonts.openSans(
+                    color: const Color(0xFF003D79),
+                    fontSize: 18 * scale,
+                    // DI SINI PERUBAHANNYA: w900 (Black) agar bold banget
+                    fontWeight: FontWeight.w900,
                   ),
                 ),
                 Row(
                   children: [
-                    Icon(Icons.tune, color: bcaLightBlue, size: 16),
-                    const SizedBox(width: 4),
+                    Icon(Icons.tune, color: bcaLightBlue, size: 16 * scale),
+                    SizedBox(width: 4 * scale),
                     Text(
                       'Atur',
-                      style: TextStyle(
+                      style: GoogleFonts.openSans(
                         color: bcaLightBlue,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w800, // Ikut dipertebal sedikit
+                        fontSize: 14 * scale,
                       ),
                     ),
                   ],
@@ -437,7 +468,6 @@ class _MyBcaHomeScreenState extends State<MyBcaHomeScreen> {
             ),
           ),
           _buildMenuGrid(),
-          // Carousel Indicators (Dots) digantikan oleh BcaPromoCarousel di bawah
           _buildQuickActions(),
         ],
       ),
@@ -445,30 +475,29 @@ class _MyBcaHomeScreenState extends State<MyBcaHomeScreen> {
   }
 
   Widget _buildMenuGrid() {
-    Widget _buildTransferIcon() {
-      return const Icon(Icons.send, color: Color(0xFF004D8E), size: 32);
-    }
+    Widget _buildTransferIcon() =>
+        Icon(Icons.send, color: const Color(0xFF004D8E), size: 32 * scale);
 
     Widget _buildBayarIsiUlangIcon() {
       return Stack(
         clipBehavior: Clip.none,
         alignment: Alignment.center,
         children: [
-          const Icon(Icons.receipt, color: Color(0xFF004D8E), size: 30),
+          Icon(Icons.receipt, color: const Color(0xFF004D8E), size: 30 * scale),
           Positioned(
-            top: -2,
-            left: -4,
+            top: -2 * scale,
+            left: -4 * scale,
             child: Container(
-              padding: const EdgeInsets.all(3),
+              padding: EdgeInsets.all(3 * scale),
               decoration: const BoxDecoration(
                 color: Color(0xFF1CB5E0),
                 shape: BoxShape.circle,
               ),
-              child: const Text(
+              child: Text(
                 'Rp',
-                style: TextStyle(
+                style: GoogleFonts.openSans(
                   color: Colors.white,
-                  fontSize: 7,
+                  fontSize: 7 * scale,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -480,56 +509,70 @@ class _MyBcaHomeScreenState extends State<MyBcaHomeScreen> {
 
     Widget _buildInvestasiIcon() {
       return Container(
-        width: 28,
-        height: 28,
+        width: 28 * scale,
+        height: 28 * scale,
         decoration: BoxDecoration(
           color: const Color(0xFF004D8E),
-          borderRadius: BorderRadius.circular(6),
+          borderRadius: BorderRadius.circular(6 * scale),
         ),
-        child: const Icon(Icons.show_chart, color: Colors.yellow, size: 20),
+        child: Icon(Icons.show_chart, color: Colors.yellow, size: 20 * scale),
       );
     }
 
     Widget _buildLifestyleIcon() {
-      return const Stack(
+      return Stack(
         clipBehavior: Clip.none,
         alignment: Alignment.center,
         children: [
-          Icon(Icons.local_mall, color: Color(0xFF004D8E), size: 30),
+          Icon(
+            Icons.local_mall,
+            color: const Color(0xFF004D8E),
+            size: 30 * scale,
+          ),
           Positioned(
-            bottom: -2,
-            right: -6,
-            child: Icon(Icons.local_mall, color: Color(0xFF1CB5E0), size: 18),
+            bottom: -2 * scale,
+            right: -6 * scale,
+            child: Icon(
+              Icons.local_mall,
+              color: const Color(0xFF1CB5E0),
+              size: 18 * scale,
+            ),
           ),
         ],
       );
     }
 
-    Widget _buildEStatementIcon() {
-      return const Icon(Icons.description, color: Color(0xFF004D8E), size: 32);
-    }
+    Widget _buildEStatementIcon() => Icon(
+      Icons.description,
+      color: const Color(0xFF004D8E),
+      size: 32 * scale,
+    );
 
     Widget _buildFlazzIcon() {
       return Container(
-        width: 32,
-        height: 22,
+        width: 32 * scale,
+        height: 22 * scale,
         decoration: BoxDecoration(
           color: const Color(0xFF004D8E),
-          borderRadius: BorderRadius.circular(4),
+          borderRadius: BorderRadius.circular(4 * scale),
         ),
-        child: const Stack(
+        child: Stack(
           alignment: Alignment.center,
           children: [
             Positioned(
-              top: 2,
-              left: 2,
-              child: Icon(Icons.wifi, color: Color(0xFF1CB5E0), size: 10),
+              top: 2 * scale,
+              left: 2 * scale,
+              child: Icon(
+                Icons.wifi,
+                color: const Color(0xFF1CB5E0),
+                size: 10 * scale,
+              ),
             ),
             Text(
               'Flazz',
-              style: TextStyle(
+              style: GoogleFonts.openSans(
                 color: Colors.white,
-                fontSize: 8,
+                fontSize: 8 * scale,
                 fontStyle: FontStyle.italic,
                 fontWeight: FontWeight.bold,
               ),
@@ -544,21 +587,28 @@ class _MyBcaHomeScreenState extends State<MyBcaHomeScreen> {
         clipBehavior: Clip.none,
         alignment: Alignment.center,
         children: [
-          const Icon(Icons.phone_android, color: Color(0xFF004D8E), size: 30),
+          Icon(
+            Icons.phone_android,
+            color: const Color(0xFF004D8E),
+            size: 30 * scale,
+          ),
           Positioned(
-            bottom: 4,
-            right: -6,
+            bottom: 4 * scale,
+            right: -6 * scale,
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+              padding: EdgeInsets.symmetric(
+                horizontal: 4 * scale,
+                vertical: 2 * scale,
+              ),
               decoration: BoxDecoration(
                 color: const Color(0xFF1CB5E0),
-                borderRadius: BorderRadius.circular(4),
+                borderRadius: BorderRadius.circular(4 * scale),
               ),
-              child: const Text(
+              child: Text(
                 'Rp',
-                style: TextStyle(
+                style: GoogleFonts.openSans(
                   color: Colors.white,
-                  fontSize: 6,
+                  fontSize: 6 * scale,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -573,21 +623,25 @@ class _MyBcaHomeScreenState extends State<MyBcaHomeScreen> {
         clipBehavior: Clip.none,
         alignment: Alignment.center,
         children: [
-          const Icon(Icons.account_balance, color: Color(0xFF004D8E), size: 30),
+          Icon(
+            Icons.account_balance,
+            color: const Color(0xFF004D8E),
+            size: 30 * scale,
+          ),
           Positioned(
-            bottom: -2,
-            right: -4,
+            bottom: -2 * scale,
+            right: -4 * scale,
             child: Container(
-              padding: const EdgeInsets.all(2),
+              padding: EdgeInsets.all(2 * scale),
               decoration: const BoxDecoration(
                 color: Color(0xFF1CB5E0),
                 shape: BoxShape.circle,
               ),
-              child: const Text(
+              child: Text(
                 'Rp',
-                style: TextStyle(
+                style: GoogleFonts.openSans(
                   color: Colors.white,
-                  fontSize: 7,
+                  fontSize: 7 * scale,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -597,52 +651,50 @@ class _MyBcaHomeScreenState extends State<MyBcaHomeScreen> {
       );
     }
 
-    Widget _buildProteksiIcon() {
-      return const Icon(
-        Icons.health_and_safety,
-        color: Color(0xFF004D8E),
-        size: 32,
-      );
-    }
+    Widget _buildProteksiIcon() => Icon(
+      Icons.health_and_safety,
+      color: const Color(0xFF004D8E),
+      size: 32 * scale,
+    );
 
     Widget _buildSemuaFiturIcon() {
       return SizedBox(
-        width: 26,
-        height: 26,
+        width: 26 * scale,
+        height: 26 * scale,
         child: Wrap(
-          spacing: 2,
-          runSpacing: 2,
+          spacing: 2 * scale,
+          runSpacing: 2 * scale,
           children: [
             Container(
-              width: 12,
-              height: 12,
+              width: 12 * scale,
+              height: 12 * scale,
               decoration: BoxDecoration(
                 color: const Color(0xFF004D8E),
-                borderRadius: BorderRadius.circular(4),
+                borderRadius: BorderRadius.circular(4 * scale),
               ),
             ),
             Container(
-              width: 12,
-              height: 12,
+              width: 12 * scale,
+              height: 12 * scale,
               decoration: BoxDecoration(
                 color: Colors.amber.shade400,
-                borderRadius: BorderRadius.circular(4),
+                borderRadius: BorderRadius.circular(4 * scale),
               ),
             ),
             Container(
-              width: 12,
-              height: 12,
+              width: 12 * scale,
+              height: 12 * scale,
               decoration: BoxDecoration(
                 color: const Color(0xFF004D8E),
-                borderRadius: BorderRadius.circular(4),
+                borderRadius: BorderRadius.circular(4 * scale),
               ),
             ),
             Container(
-              width: 12,
-              height: 12,
+              width: 12 * scale,
+              height: 12 * scale,
               decoration: BoxDecoration(
                 color: const Color(0xFF004D8E),
-                borderRadius: BorderRadius.circular(4),
+                borderRadius: BorderRadius.circular(4 * scale),
               ),
             ),
           ],
@@ -689,7 +741,7 @@ class _MyBcaHomeScreenState extends State<MyBcaHomeScreen> {
 
     Widget buildItem(Map<String, dynamic> item) {
       return SizedBox(
-        width: 95,
+        width: 95 * scale,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -697,8 +749,8 @@ class _MyBcaHomeScreenState extends State<MyBcaHomeScreen> {
               alignment: Alignment.topRight,
               children: [
                 Container(
-                  width: 60,
-                  height: 60,
+                  width: 60 * scale,
+                  height: 60 * scale,
                   alignment: Alignment.center,
                   decoration: const BoxDecoration(
                     color: Color(0xFFE5F6FA),
@@ -708,33 +760,33 @@ class _MyBcaHomeScreenState extends State<MyBcaHomeScreen> {
                 ),
                 if (item['isNew'])
                   Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 4,
-                      vertical: 2,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 4 * scale,
+                      vertical: 2 * scale,
                     ),
                     decoration: BoxDecoration(
                       color: Colors.orange,
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(8 * scale),
                     ),
-                    child: const Text(
+                    child: Text(
                       'NEW',
-                      style: TextStyle(
+                      style: GoogleFonts.openSans(
                         color: Colors.white,
-                        fontSize: 8,
+                        fontSize: 8 * scale,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
               ],
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: 10 * scale),
             Text(
               item['label'],
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 11,
+              style: GoogleFonts.openSans(
+                fontSize: 11 * scale,
                 color: Colors.black87,
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.w700,
               ),
               maxLines: 2,
             ),
@@ -766,12 +818,7 @@ class _MyBcaHomeScreenState extends State<MyBcaHomeScreen> {
               child: SingleChildScrollView(
                 controller: scrollController,
                 scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.only(
-                  left: 10,
-                  right: 10,
-                  top: 10,
-                  bottom: 10,
-                ),
+                padding: EdgeInsets.all(10 * scale),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -782,7 +829,7 @@ class _MyBcaHomeScreenState extends State<MyBcaHomeScreen> {
                           .map((item) => buildItem(item))
                           .toList(),
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: 16 * scale),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: menuItems
@@ -795,37 +842,45 @@ class _MyBcaHomeScreenState extends State<MyBcaHomeScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(bottom: 20.0),
+              padding: EdgeInsets.only(bottom: 20.0 * scale),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.chevron_left, size: 16, color: bcaLightBlue),
-                  const SizedBox(width: 4),
+                  Icon(
+                    Icons.chevron_left,
+                    size: 16 * scale,
+                    color: bcaLightBlue,
+                  ),
+                  SizedBox(width: 4 * scale),
                   Container(
-                    width: 24,
-                    height: 5,
+                    width: 24 * scale,
+                    height: 5 * scale,
                     decoration: BoxDecoration(
                       color: Colors.grey.shade200,
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(10 * scale),
                     ),
                     child: Stack(
                       children: [
                         Positioned(
-                          left: scrollProgress * (24 - 12),
+                          left: scrollProgress * ((24 * scale) - (12 * scale)),
                           child: Container(
-                            width: 12,
-                            height: 5,
+                            width: 12 * scale,
+                            height: 5 * scale,
                             decoration: BoxDecoration(
                               color: bcaLightBlue,
-                              borderRadius: BorderRadius.circular(10),
+                              borderRadius: BorderRadius.circular(10 * scale),
                             ),
                           ),
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(width: 4),
-                  Icon(Icons.chevron_right, size: 16, color: bcaLightBlue),
+                  SizedBox(width: 4 * scale),
+                  Icon(
+                    Icons.chevron_right,
+                    size: 16 * scale,
+                    color: bcaLightBlue,
+                  ),
                 ],
               ),
             ),
@@ -837,29 +892,36 @@ class _MyBcaHomeScreenState extends State<MyBcaHomeScreen> {
 
   Widget _buildQuickActions() {
     return Padding(
-      padding: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0),
+      padding: EdgeInsets.only(
+        left: 20.0 * scale,
+        right: 20.0 * scale,
+        bottom: 20.0 * scale,
+      ),
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(16 * scale),
           border: Border.all(color: Colors.grey.shade200),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.05),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
+              blurRadius: 10 * scale,
+              offset: Offset(0, 4 * scale),
             ),
           ],
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+          padding: EdgeInsets.symmetric(
+            horizontal: 24.0 * scale,
+            vertical: 16.0 * scale,
+          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Row(
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(8),
+                    padding: EdgeInsets.all(8 * scale),
                     decoration: const BoxDecoration(
                       color: Color(0xFFE5F6FA),
                       shape: BoxShape.circle,
@@ -867,39 +929,45 @@ class _MyBcaHomeScreenState extends State<MyBcaHomeScreen> {
                     child: Icon(
                       Icons.contactless_outlined,
                       color: bcaBlue,
-                      size: 20,
+                      size: 20 * scale,
                     ),
                   ),
-                  const SizedBox(width: 8),
-                  const Text(
+                  SizedBox(width: 8 * scale),
+                  Text(
                     'NFC Pay',
-                    style: TextStyle(
-                      color: Color(0xFF003D79),
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: GoogleFonts.openSans(
+                      color: const Color(0xFF003D79),
+                      fontWeight: FontWeight.w800,
+                      fontSize: 14 * scale,
+                    ), // Dipertebal
                   ),
                 ],
               ),
-              const Row(
+              Row(
                 children: [
                   Text(
                     'QRIS',
-                    style: TextStyle(
+                    style: GoogleFonts.openSans(
                       color: Colors.black,
                       fontWeight: FontWeight.w900,
                       fontStyle: FontStyle.italic,
+                      fontSize: 14 * scale,
                     ),
                   ),
                   Text(
                     'tap',
-                    style: TextStyle(
-                      color: Color(0xFF1CB5E0),
-                      fontSize: 10,
-                      fontWeight: FontWeight.bold,
+                    style: GoogleFonts.openSans(
+                      color: const Color(0xFF1CB5E0),
+                      fontSize: 10 * scale,
+                      fontWeight: FontWeight.w800,
                     ),
                   ),
-                  SizedBox(width: 8),
-                  Icon(Icons.chevron_right, color: Color(0xFF003D79)),
+                  SizedBox(width: 8 * scale),
+                  Icon(
+                    Icons.chevron_right,
+                    color: const Color(0xFF003D79),
+                    size: 24 * scale,
+                  ),
                 ],
               ),
             ],
@@ -914,7 +982,7 @@ class _MyBcaHomeScreenState extends State<MyBcaHomeScreen> {
       decoration: const BoxDecoration(color: Color(0xFF004D8E)),
       child: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          padding: EdgeInsets.symmetric(vertical: 8.0 * scale),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -924,23 +992,23 @@ class _MyBcaHomeScreenState extends State<MyBcaHomeScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(12),
+                    padding: EdgeInsets.all(12 * scale),
                     decoration: const BoxDecoration(
                       color: Color(0xFF1CB5E0),
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(
+                    child: Icon(
                       Icons.qr_code_scanner,
                       color: Colors.white,
-                      size: 28,
+                      size: 28 * scale,
                     ),
                   ),
-                  const SizedBox(height: 4),
-                  const Text(
+                  SizedBox(height: 4 * scale),
+                  Text(
                     'QRIS',
-                    style: TextStyle(
+                    style: GoogleFonts.openSans(
                       color: Colors.white,
-                      fontSize: 10,
+                      fontSize: 10 * scale,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -959,13 +1027,18 @@ class _MyBcaHomeScreenState extends State<MyBcaHomeScreen> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(icon, color: isSelected ? Colors.white : Colors.white60),
-        const SizedBox(height: 4),
+        Icon(
+          icon,
+          color: isSelected ? Colors.white : Colors.white60,
+          size: 24 * scale,
+        ),
+        SizedBox(height: 4 * scale),
         Text(
           label,
-          style: TextStyle(
+          style: GoogleFonts.openSans(
             color: isSelected ? Colors.white : Colors.white60,
-            fontSize: 10,
+            fontSize: 10 * scale,
+            fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
           ),
         ),
       ],
@@ -989,7 +1062,8 @@ class _BcaPromoCarouselState extends State<BcaPromoCarousel> {
   int _currentPage = 0;
   Timer? _timer;
 
-  // Placeholder data promo
+  double scale = 1.0;
+
   final List<String> _promoItems = [
     'Promo 1: Gebyar Hadiah',
     'Promo 2: Diskon Lifestyle',
@@ -1029,10 +1103,12 @@ class _BcaPromoCarouselState extends State<BcaPromoCarousel> {
 
   @override
   Widget build(BuildContext context) {
+    scale = (MediaQuery.of(context).size.width / 430.0).clamp(0.7, 1.0);
+
     return Column(
       children: [
         SizedBox(
-          height: 120,
+          height: 120 * scale,
           child: PageView.builder(
             controller: _pageController,
             onPageChanged: (int page) {
@@ -1043,28 +1119,29 @@ class _BcaPromoCarouselState extends State<BcaPromoCarousel> {
             itemCount: _promoItems.length,
             itemBuilder: (context, index) {
               return Container(
-                margin: const EdgeInsets.symmetric(
-                  horizontal: 8.0,
-                  vertical: 8.0,
+                margin: EdgeInsets.symmetric(
+                  horizontal: 8.0 * scale,
+                  vertical: 8.0 * scale,
                 ),
                 decoration: BoxDecoration(
                   color: const Color(0xFF002244),
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(16 * scale),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withOpacity(0.1),
-                      blurRadius: 5,
-                      offset: const Offset(0, 3),
+                      blurRadius: 5 * scale,
+                      offset: Offset(0, 3 * scale),
                     ),
                   ],
                 ),
                 child: Center(
                   child: Text(
                     _promoItems[index],
-                    style: const TextStyle(
+                    style: GoogleFonts.openSans(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                       fontStyle: FontStyle.italic,
+                      fontSize: 14 * scale,
                     ),
                   ),
                 ),
@@ -1072,27 +1149,26 @@ class _BcaPromoCarouselState extends State<BcaPromoCarousel> {
             },
           ),
         ),
-        const SizedBox(height: 8),
-        // Dots Indicator Animasi
+        SizedBox(height: 8 * scale),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: List.generate(
             _promoItems.length,
             (index) => AnimatedContainer(
               duration: const Duration(milliseconds: 300),
-              margin: const EdgeInsets.symmetric(horizontal: 4.0),
-              height: 6,
-              width: _currentPage == index ? 20 : 6,
+              margin: EdgeInsets.symmetric(horizontal: 4.0 * scale),
+              height: 6 * scale,
+              width: _currentPage == index ? 20 * scale : 6 * scale,
               decoration: BoxDecoration(
                 color: _currentPage == index
                     ? const Color(0xFF1CB5E0)
                     : Colors.grey.shade300,
-                borderRadius: BorderRadius.circular(3),
+                borderRadius: BorderRadius.circular(3 * scale),
               ),
             ),
           ),
         ),
-        const SizedBox(height: 20),
+        SizedBox(height: 20 * scale),
       ],
     );
   }
